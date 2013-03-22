@@ -1,0 +1,21 @@
+<head>
+  <title>meteorFlickrExample</title>
+</head>
+
+<body>
+  <h1>Flickr Tag Search</h1>
+  {{> flickrSearch}}
+  <br><br>
+  {{> flickrResults }}
+</body>
+
+<template name="flickrSearch">
+  <input type="text" name="query" />
+</template>
+
+
+<template name="flickrResults">
+  {{#each photos }}
+    <img src="{{ getPhotoUrl this }}" width=150 height=150>
+  {{/each}}
+</template>
