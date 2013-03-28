@@ -17,7 +17,7 @@ if Meteor.isClient
       host = "farm#{photo.farm}.staticflickr.com"
       "http://#{host}/#{photo.server}/#{photo.id}_#{photo.secret}_#{size}.jpg"
 
-  Meteor.startup () ->
+  Meteor.autorun () ->
     flickrData = 
       method: 'flickr.photos.search'
       format: 'json'
