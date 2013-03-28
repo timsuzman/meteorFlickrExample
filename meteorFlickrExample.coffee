@@ -15,12 +15,14 @@ if Meteor.isClient
   Template.flickr.results = () -> Session.get "photos"
   Template.flickr.isLoading = () -> Session.get "isLoading"
 
-  Template.flickr.helpers 
-    getPhotoUrl: (photo) ->
+  Template.flickr.getPhotoUrl = (photo) ->
       size = 'q'
       host = "farm#{photo.farm}.staticflickr.com"
       "http://#{host}/#{photo.server}/#{photo.id}_#{photo.secret}_#{size}.jpg"
 
+  Template.flickr.rendered = () ->
+    $('input').focus()
+    
   Meteor.autorun () ->
     Session.set "isLoading", true
     flickrData = 
@@ -34,4 +36,3 @@ if Meteor.isClient
     $.get 'http://api.flickr.com/services/rest/', flickrData, (response) ->
       Session.set("photos", response.photos.photo)
       Session.set "isLoading", false
-

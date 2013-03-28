@@ -10,16 +10,19 @@
   <h1>Flickr Tag Search</h1>
   
   <input type="text" name="query" value="{{ query }}"/>
+  
   {{# if isLoading }}
     Loading...
   {{/ if }}
+
   <div>
     <button class="prev-page" name="prev">prev</button>
     <button class="next-page" name="next">next</button>
     Page: {{ page }}
   </div>
   
-  <br><br>
+  <br>
+
   {{#each results }}
     <img src="{{ getPhotoUrl this }}" width=150 height=150>
   {{/each}}
