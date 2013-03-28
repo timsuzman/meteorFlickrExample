@@ -2,22 +2,27 @@ if Meteor.isClient
   Session.setDefault("page", 1)
   Session.setDefault("query", "chess")
 
-  Template.flickrSearch.events
+  Template.flickr.events
     'keyup input': (e) ->
-      console.log "changed"
       Session.set("query", $(e.target).val())
+    'click .next-page': () ->
+      Session.set("page", Session.get("page") + 1)
+    'click .prev-page': () ->
+      Session.set("page", Session.get("page") - 1)
 
-  Template.flickrResults.photos = () ->
-    console.log "results photos", Session.get "photos"
-    Session.get "photos"
+  Template.flickr.page = () -> Session.get "page"
+  Template.flickr.query = () -> Session.get "query"
+  Template.flickr.results = () -> Session.get "photos"
+  Template.flickr.isLoading = () -> Session.get "isLoading"
 
-  Template.flickrResults.helpers 
+  Template.flickr.helpers 
     getPhotoUrl: (photo) ->
       size = 'q'
       host = "farm#{photo.farm}.staticflickr.com"
       "http://#{host}/#{photo.server}/#{photo.id}_#{photo.secret}_#{size}.jpg"
 
   Meteor.autorun () ->
+    Session.set "isLoading", true
     flickrData = 
       method: 'flickr.photos.search'
       format: 'json'
@@ -27,6 +32,6 @@ if Meteor.isClient
       page: Session.get("page")
       per_page: 16
     $.get 'http://api.flickr.com/services/rest/', flickrData, (response) ->
-      console.log "response", response
       Session.set("photos", response.photos.photo)
+      Session.set "isLoading", false
 
